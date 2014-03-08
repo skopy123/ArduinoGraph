@@ -30,8 +30,8 @@ namespace ArduinoGraph {
         }
 
         public void Close() {
-            comThread.Abort();
             serialPort.Close();
+            comThread.Abort();
         }
 
         public bool IsOpen { get { return serialPort.IsOpen; } }
@@ -51,6 +51,9 @@ namespace ArduinoGraph {
                 }
                 catch (TimeoutException e) {
                     continue;
+                }
+                catch (System.IO.IOException e) {
+                    break;
                 }
                 OnLineRecieved(s);
             }

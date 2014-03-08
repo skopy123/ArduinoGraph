@@ -56,8 +56,12 @@ namespace ArduinoGraph {
 
         // event OnLineRecived raised by communication thread, this EventHandler also run in communication thread. UI components can not be accessed from this eventhandler.
         private void OnLineRecievedEventHandler(string s){
-            Invoke((MethodInvoker)delegate { ProcessMessage(s); }); // run ProcessMessage function in UI thread
-            return;    
+            if (InvokeRequired) {
+                Invoke((MethodInvoker)delegate { ProcessMessage(s); }); // run ProcessMessage function in UI thread
+            }
+            else {
+                ProcessMessage(s);
+            }
         }
 
         //This function run in UI thread, you can manipulate with UI commponents in this function
