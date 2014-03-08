@@ -16,6 +16,7 @@ namespace ArduinoGraph {
 
         ThreadedSerialPort tsp;
         StringBuilder Log;
+        DataTransformTool dtt;
 
         public Form1() {
             InitializeComponent();
@@ -23,8 +24,9 @@ namespace ArduinoGraph {
                 comboBox1.Items.Add("COM"+i.ToString());
             }
             comboBox1.SelectedIndex = 0;
+            chart1.Series.Clear();
             Log = new StringBuilder();
-            ChartSetUp();
+            dtt = new BMP180Example(chart1);
         }
 
         private void AddToLog(string s) {
@@ -60,32 +62,17 @@ namespace ArduinoGraph {
 
         //This function run in UI thread, you can manipulate with UI commponents in this function
         private void ProcessMessage(string s) {
-            AddToLog(s+"\n");
-            // process message from arduino here
-            string[] values = s.Split(';');
-            if (values.Count() > 1) {
-                double d = Convert.ToDouble(values[0]);
-                d = d / 100;
-                chart1.Series["temp"].Points.AddY(d);
-
-            }
-           
+            AddToLog(s);
+            dtt.ProcessMessage(s);
         }
 
-        private void ChartSetUp() {
-            chart1.Series.Clear();
-            chart1.Series.Add("temp");
-            chart1.Series["temp"].Color = Color.Red;
-            chart1.Series["temp"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            chart1.Series["temp"].MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Cross;
-            chart1.Series["temp"].MarkerSize = 3;
-
-        }
-
-        private void Form1_FormClosed(object sender, FormClosedEventArgs e) {
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e) {
             if (tsp != null) {
                 tsp.Close();
             }
         }
+
+     
     }
+
 }

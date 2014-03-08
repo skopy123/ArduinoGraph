@@ -15,7 +15,6 @@ namespace ArduinoGraph {
             serialPort.BaudRate = baudRate;
             serialPort.ReadTimeout = 500;
             serialPort.NewLine = "\r\n";
-            comThread = new Thread(this.ReadLoop);
         }
 
         public bool Open() {
@@ -23,6 +22,7 @@ namespace ArduinoGraph {
                 serialPort.Open();
             }
             if (serialPort.IsOpen) {
+                comThread = new Thread(this.ReadLoop);
                 comThread.Start();
                 return true;
             }
