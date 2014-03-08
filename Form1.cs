@@ -26,7 +26,8 @@ namespace ArduinoGraph {
             comboBox1.SelectedIndex = 0;
             chart1.Series.Clear();
             Log = new StringBuilder();
-            dtt = new BMP180Example(chart1);
+            //dtt = new BMP180Example(chart1);
+            dtt = new AnalogReadExamples(chart1);
         }
 
         private void AddToLog(string s) {

@@ -52,6 +52,12 @@ namespace ArduinoGraph {
             chart.Series["pressure"].YAxisType = AxisType.Secondary; // use AxisY2
         }
 
+        /*
+         * input data sended by mcu look like:
+         23;101274;
+         24;101272;
+         * one row is one sample, ";" is used as delimiter, ProcessMessage function ignore initial Log messages if not contains at least 2 delimiters
+         */
         public override void ProcessMessage(string s) {
             try {
                 // process message from arduino here
