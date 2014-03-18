@@ -25,7 +25,7 @@ namespace ArduinoGraph {
                 "System.Windows.Forms.dll", 
                 "System.Windows.Forms.DataVisualization.dll", 
                 "ArduinoGraphModuleInterface.dll" });
-            parameters.OutputAssembly = dllname;
+            parameters.OutputAssembly =".\\modules\\" + dllname;
             filename = ".\\modules\\" + filename;
             results = csc.CompileAssemblyFromFile(parameters, filename);
 
