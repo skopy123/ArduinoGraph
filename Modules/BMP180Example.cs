@@ -5,13 +5,18 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 using System.Windows.Forms.DataVisualization.Charting;
+using ArduinoGraphModuleInterface;
 
 namespace ArduinoGraph {
-    class BMP180Example : DataTransformTool {
+    class BMP180Example : IArduinoGraphModule {
 
         DateTime start;
+           
+        protected Chart chart;
 
-        public BMP180Example(Chart outputChart): base(outputChart)  {
+        public void SetupChart(Chart c){
+            chart = c;
+
             start = DateTime.Now;
             chart.ChartAreas[0].AxisX.Title = "Time [s]";
             chart.ChartAreas[0].AxisX.MajorGrid.Interval = 5;
@@ -58,7 +63,7 @@ namespace ArduinoGraph {
          24;101272;
          * one row is one sample, ";" is used as delimiter, ProcessMessage function ignore initial Log messages if not contains at least 2 delimiters
          */
-        public override void ProcessMessage(string s) {
+        public void ProcessMessage(string s) {
             try {
                 // process message from arduino here
                 double x = (DateTime.Now - start).TotalSeconds;

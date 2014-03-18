@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
 using System.IO.Ports;
+using ArduinoGraphModuleInterface;
 
 namespace ArduinoGraph {
 
@@ -16,9 +17,10 @@ namespace ArduinoGraph {
 
         ThreadedSerialPort tsp;
         StringBuilder Log;
-        DataTransformTool dtt;
-
+        ModuleBuilder mb;
+        IArduinoGraphModule module;
         public Form1() {
+           
             InitializeComponent();
             for (int i = 1; i < 10; i++) {
                 comboBox1.Items.Add("COM"+i.ToString());
@@ -26,8 +28,11 @@ namespace ArduinoGraph {
             comboBox1.SelectedIndex = 0;
             chart1.Series.Clear();
             Log = new StringBuilder();
-            //dtt = new BMP180Example(chart1);
-            dtt = new AnalogReadExamples(chart1);
+            mb = new ModuleBuilder();
+            module = mb.GetModuleObjectInstance("AnalogReadExamples.cs");
+            //module = new BMP180Example();
+            module.SetupChart(chart1);
+            // to do error handling
         }
 
         private void AddToLog(string s) {
@@ -68,7 +73,7 @@ namespace ArduinoGraph {
         //This function run in UI thread, you can manipulate with UI commponents in this function
         private void ProcessMessage(string s) {
             AddToLog(s);
-            dtt.ProcessMessage(s);
+            module.ProcessMessage(s);
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e) {
@@ -77,6 +82,7 @@ namespace ArduinoGraph {
             }
         }
 
+       
      
     }
 
