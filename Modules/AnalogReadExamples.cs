@@ -14,7 +14,7 @@ namespace ArduinoGraph {
         public void SetupChart(Chart c){
             chart = c;
             chart.Series.Add("value");
-            chart.Series["value"].Color = Color.Red;
+            chart.Series["value"].Color = Color.Green;
             chart.Series["value"].ChartType = SeriesChartType.Line;
         }
 
